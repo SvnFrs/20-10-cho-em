@@ -1,0 +1,33 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+npm-debug.log*
+
+# Dependencies (if you add any)
+node_modules/
+
+# Backup files
+*.bak
+*.backup
+.github/instructions
+
+DEPLOY.md
+HUONG-DAN.md
+README.md
+deploy.sh

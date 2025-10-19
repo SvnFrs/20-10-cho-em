@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chúc mừng 20-10 💐</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Noto+Serif:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Serif', serif;
+            overflow: hidden;
+            background: #000;
+        }
+
+        /* ===== STEP 0: Welcome Message ===== */
+        #welcome-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            opacity: 1;
+            transition: opacity 0.8s ease-out;
+            cursor: pointer;
+        }
+
+        #welcome-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .welcome-content {
+            text-align: center;
+            color: white;
+            padding: 40px;
+        }
+
+        .welcome-content h1 {
+            font-size: 4em;
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 20px;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .welcome-content p {
+            font-size: 1.5em;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease-out 0.3s backwards;
+        }
+
+        .welcome-content .subtitle {
+            font-size: 1.2em;
+            margin-top: 30px;
+            opacity: 0.7;
+            animation: fadeInUp 1s ease-out 0.6s backwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== Navigation Buttons ===== */
+        .nav-button {
+            position: absolute;
+            bottom: 8%;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 15px 40px;
+            font-size: 1.3em;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Noto Serif', serif;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            z-index: 500;
+            animation: pulseButton 2s ease-in-out infinite;
+        }
+
+        .nav-button:hover {
+            transform: translateX(-50%) scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        @keyframes pulseButton {
+            0%, 100% {
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            }
+            50% {
+                box-shadow: 0 4px 25px rgba(102, 126, 234, 0.6);
+            }
+        }
+
+        /* ===== STEP 1: Hoa Nở Đêm Container ===== */
+        #step1-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1s ease-in-out;
+            z-index: 100;
+        }
+
+        #step1-container.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        #step1-message {
+            position: absolute;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            text-align: center;
+            font-size: 1.8em;
+            padding: 20px 40px;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 15px;
+            max-width: 90%;
+            z-index: 200;
+            animation: messageFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes messageFloat {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-10px); }
+        }
+
+        #step1-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        /* ===== STEP 2: Hoa Nở + Vẽ Hoa Container ===== */
+        #step2-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1s ease-in-out;
+            z-index: 100;
+            background: linear-gradient(135deg, #fff5f8 0%, #ffe8f0 100%);
+        }
+
+        #step2-container.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        #step2-message {
+            position: absolute;
+            top: 5%;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #883277;
+            text-align: center;
+            font-size: 1.6em;
+            padding: 15px 30px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            max-width: 90%;
+            z-index: 300;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        #step2-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: transparent;
+        }
+
+        #draw-svg {
+            pointer-events: none !important;
+            background: transparent;
+        }
+
+        #draw-svg.drawing-active {
+            pointer-events: all !important;
+        }
+
+        #complete-btn {
+            position: absolute;
+            bottom: 18%;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 15px 40px;
+            font-size: 1.3em;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            z-index: 300;
+            font-family: 'Noto Serif', serif;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        #complete-btn:hover {
+            transform: translateX(-50%) scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        #complete-btn.hidden {
+            display: none;
+        }
+
+        #final-message {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #883277;
+            text-align: center;
+            font-size: 2em;
+            padding: 30px 50px;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 20px;
+            max-width: 80%;
+            z-index: 400;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+            animation: popIn 0.5s ease-out;
+        }
+
+        @keyframes popIn {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        /* ===== STEP 3: Flower Dance Container ===== */
+        #step3-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1s ease-in-out;
+            z-index: 100;
+            background-color: #ffeaf1;
+        }
+
+        #step3-container.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        #step3-message {
+            position: absolute;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #883277;
+            text-align: center;
+            font-size: 1.8em;
+            padding: 20px 40px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            max-width: 90%;
+            z-index: 200;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            animation: messageFloat 3s ease-in-out infinite;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .welcome-content h1 {
+                font-size: 2.5em;
+            }
+            .welcome-content p {
+                font-size: 1.2em;
+            }
+            #step1-message,
+            #step2-message,
+            #step3-message {
+                font-size: 1.2em;
+                padding: 15px 25px;
+            }
+            #final-message {
+                font-size: 1.5em;
+                padding: 20px 30px;
+            }
+            .nav-button {
+                font-size: 1.1em;
+                padding: 12px 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- STEP 0: Welcome Screen -->
+    <div id="welcome-screen">
+        <div class="welcome-content">
+            <h1>💐 Chúc Mừng 20-10 💐</h1>
+            <p>Gửi đến một người phụ nữ tuyệt vời</p>
+            <p class="subtitle">(Nhấn vào bất kì đâu để tiếp tục)</p>
+        </div>
+    </div>
+
+    <!-- STEP 1: Hoa Nở Đêm -->
+    <div id="step1-container">
+        <div id="step1-message">
+            Dù trong năm qua, bao nhiêu khó khăn em đi qua,<br>
+            có vấp ngã, em vẫn đứng dậy và cố hết sức mình
+        </div>
+        <iframe id="step1-iframe" src="hoa-no-dem/index.html"></iframe>
+        <button class="nav-button" id="step1-next">Đi tiếp thôi 💫</button>
+    </div>
+
+    <!-- STEP 2: Hoa Nở + Vẽ Hoa -->
+    <div id="step2-container">
+        <div id="step2-message">
+            Em hãy tự tô điểm cho bông hoa của em đi<br>
+            <small>(Di chuột hoặc chạm ngón tay xung quanh)</small>
+        </div>
+        
+        <!-- Hoa Nở background trong iframe -->
+        <iframe id="step2-iframe" src="hoa-no/index.html"></iframe>
+        
+        <!-- Vẽ Hoa overlay SVG -->
+        <svg class="root-svg" id="root-svg" style="width:1px;height:1px;position:absolute;left:-100em;">
+            <defs>
+                <filter id="f" width="200" height="200" x="-100" y="-100">
+                    <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blur"></feGaussianBlur>
+                    <feFlood flood-color="rgb(60,10,60)" result="color"/>
+                    <feComposite in="color" in2="blur" operator="in" result="shadow" />
+                    <feOffset in="shadow" dx="3" dy="3" result="offset"></feOffset>
+                    <feMerge>
+                        <feMergeNode in="offset" />
+                        <feMergeNode in="SourceGraphic" />
+                    </feMerge>  
+                </filter>
+                <symbol id="petal2" viewBox="0 -100 200 200">
+                    <path transform="translate(0,-100)" d="M25.91,-15.12 Q0,0 25.91,15.12L94.09,54.889 Q120,70 142.58,50.24L177.42,19.76 Q200,0 177.42,-19.756L142.58,-50.24 Q120,-70 94.087,-54.88Z"></path>
+                </symbol>
+                <symbol id="petal3" viewBox="0 -100 200 200">
+                    <path transform="translate(0,-100)" d="M27.69,-11.54 Q0,0 27.69,11.54 L92.3,38.46 Q120,50 145.44,34.1 L174.56,15.9 Q200,0 174.56,-15.9 L145.44,-34.1 Q120,-50 92.3,-38.46Z"></path>
+                </symbol>
+                <symbol id="petal4" viewBox="0 -100 200 200">
+                    <path transform="translate(0,-100)" d="M28.09,-10.53 Q0,0 28.09,10.53L91.91,34.47 Q120,45 146.147,30.29L173.85,14.7 Q200,0 173.85,-14.7L146.15,-30.29 Q120,-45 91.91,-34.467Z"></path>
+                </symbol>
+                <symbol id="petal5" viewBox="0 -100 200 200">
+                    <path transform="translate(0,-100)" d="M28.85,-8.24 Q0,0 28.85,8.24L111.15,31.76 Q140,40 164.96,23.36L175.04,16.64 Q200,0 175.038,-16.64L164.96,-23.36 Q140,-40 111.15,-31.76Z"></path>
+                </symbol>
+            </defs>
+        </svg>
+        <svg viewBox="0 0 10000 10000" id="draw-svg" preserveAspectRatio="xMidYMid slice" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:10;background:transparent;"></svg>
+        
+        <button id="complete-btn">Xong rồi, em thấy đẹp rồi! ✨</button>
+        <div id="final-message">
+            Em luôn là bông hoa đẹp nhất,<br>
+            dù có tô điểm bao nhiêu đi nữa 🌸
+        </div>
+        <button class="nav-button" id="step2-next" style="display:none;">Đi tiếp thôi 💖</button>
+    </div>
+
+    <!-- STEP 3: Flower Dance -->
+    <div id="step3-container">
+        <div id="step3-message">
+            Hãy cứ vui tươi và lạc quan lên em ơi,<br>
+            chặng đường phía trước có dài, nhưng anh tin em làm được 💪
+        </div>
+        <iframe src="flower-dance/index.html" style="width: 100%; height: 100%; border: none;"></iframe>
+        <button class="nav-button" id="step3-finish" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">Cảm ơn anh! 🌸</button>
+    </div>
+
+    <script>
+        let currentStep = 0;
+        const welcomeScreen = document.getElementById('welcome-screen');
+        const step1Container = document.getElementById('step1-container');
+        const step2Container = document.getElementById('step2-container');
+        const step3Container = document.getElementById('step3-container');
+        const step1NextBtn = document.getElementById('step1-next');
+        const step2NextBtn = document.getElementById('step2-next');
+        const step3FinishBtn = document.getElementById('step3-finish');
+        const completeBtn = document.getElementById('complete-btn');
+        const finalMessage = document.getElementById('final-message');
+
+        // Welcome screen click
+        welcomeScreen.addEventListener('click', function() {
+            welcomeScreen.classList.add('hidden');
+            setTimeout(() => {
+                currentStep = 1;
+                step1Container.classList.add('active');
+            }, 800);
+        });
+
+        // Step 1 -> Step 2 (button click)
+        step1NextBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (currentStep === 1) {
+                currentStep = 2;
+                step1Container.classList.remove('active');
+                setTimeout(() => {
+                    step2Container.classList.add('active');
+                    
+                    // Init drawing immediately, iframe will load in background
+                    setTimeout(() => {
+                        initDrawingScript();
+                    }, 500);
+                }, 1000);
+            }
+        });
+
+        // Complete button - show final message and next button
+        completeBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            finalMessage.style.display = 'block';
+            completeBtn.classList.add('hidden');
+            setTimeout(() => {
+                step2NextBtn.style.display = 'block';
+            }, 1000);
+        });
+
+        // Step 2 -> Step 3 (button click)
+        step2NextBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (currentStep === 2) {
+                currentStep = 3;
+                step2Container.classList.remove('active');
+                setTimeout(() => {
+                    step3Container.classList.add('active');
+                }, 1000);
+            }
+        });
+
+        // Step 3 finish button
+        step3FinishBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            alert('Chúc em luôn vui vẻ và hạnh phúc! 💐');
+        });
+
+        // Initialize drawing script for Step 2
+        function initDrawingScript() {
+            const SVG_NS = "http://www.w3.org/2000/svg";
+            const SVG_XLINK = "http://www.w3.org/1999/xlink";
+            const svg = document.getElementById('draw-svg');
+            
+            // Enable drawing on SVG
+            svg.classList.add('drawing-active');
+            
+            const colors = [
+                "#ba3763", "#d34076", "#dbb0cc", "#fddafa",
+                "#fef2fe", "#eec0db", "#ca809a", "#e9d8e8"
+            ];
+
+            let m = { x: 0, y: 0 };
+            let previous = { x: 0, y: 0 };
+            let scale = 1;
+            let bool = false;
+
+            class Flower {
+                constructor(n, pos, scale, parent) {
+                    this.n = n;
+                    this.scale = scale;
+                    this.pos = pos;
+                    this.width = 40;
+                    this.height = 40;
+                    this.color = colors[~~(Math.random() * colors.length)];
+                    this.parent = parent;
+                    this.markup();
+                }
+
+                markup() {
+                    this.G = document.createElementNS(SVG_NS, "g");
+                    this.G.setAttribute("style", `--scale:${this.scale};`);
+                    let rot = ~~(Math.random() * 180);
+                    this.G.setAttributeNS(null, "transform", `translate(${this.pos.x},${this.pos.y}) rotate(${rot})`);
+                    this.G.setAttributeNS(null, "fill", this.color);
+                    
+                    let ga = document.createElementNS(SVG_NS, "g");
+                    ga.setAttribute("class", "a");
+
+                    for (let i = 0; i < 2; i++) {
+                        let g = document.createElementNS(SVG_NS, "g");
+                        for (let j = 0; j < this.n; j++) {
+                            let use = document.createElementNS(SVG_NS, "use");
+                            use.setAttributeNS(SVG_XLINK, "xlink:href", `#petal${this.n}`);
+                            use.setAttributeNS(null, "width", this.width);
+                            use.setAttributeNS(null, "height", this.height);
+                            g.appendChild(use);
+                        }
+                        ga.appendChild(g);
+                    }
+                    this.G.appendChild(ga);
+                    this.parent.appendChild(this.G);
+                    
+                    setTimeout(() => {
+                        this.G.setAttribute("class", `_${this.n}`);
+                        this.addStyles();
+                    }, 50);
+                }
+                
+                addStyles() {
+                    if (!document.getElementById('flower-draw-styles')) {
+                        const style = document.createElement('style');
+                        style.id = 'flower-draw-styles';
+                        style.textContent = `
+                            svg use{transform:rotate(0deg); transition:transform 0.5s;}
+                            svg g.a{transition:transform 0.5s;}
+                            svg g.a{transform:scale(var(--scale, 3)) rotate(-90deg); filter:url('#f')}
+                            ._2{--n: 2;} ._3{--n: 3;} ._4{--n: 4;} ._5{--n: 5;}
+                            svg .a g:nth-of-type(1){transform:rotate(calc(-.5 * 180deg / var(--n)));}
+                            svg .a g:nth-of-type(2){transform:rotate(calc(.5 * 180deg / var(--n)));}
+                            svg .a g:nth-of-type(1) use:nth-of-type(2){transform:rotate(calc(-1deg * 180 / var(--n)));}
+                            svg .a g:nth-of-type(1) use:nth-of-type(3){transform:rotate(calc(-2deg * 180 / var(--n)));}
+                            svg .a g:nth-of-type(1) use:nth-of-type(4){transform:rotate(calc(-3deg * 180 / var(--n)));}
+                            svg .a g:nth-of-type(1) use:nth-of-type(5){transform:rotate(calc(-4deg * 180 / var(--n)));}
+                            svg .a g:nth-of-type(2) use:nth-of-type(2){transform:rotate(calc(1deg * 180 / var(--n)));}
+                            svg .a g:nth-of-type(2) use:nth-of-type(3){transform:rotate(calc(2deg * 180 / var(--n)));}
+                            svg .a g:nth-of-type(2) use:nth-of-type(4){transform:rotate(calc(3deg * 180 / var(--n)));}
+                            svg .a g:nth-of-type(2) use:nth-of-type(5){transform:rotate(calc(4deg * 180 / var(--n)));}
+                        `;
+                        document.head.appendChild(style);
+                    }
+                }
+            }
+
+            function oMousePosSVG(e) {
+                let p = svg.createSVGPoint();
+                p.x = e.clientX;
+                p.y = e.clientY;
+                let ctm = svg.getScreenCTM().inverse();
+                p = p.matrixTransform(ctm);
+                return p;
+            }
+
+            function dist(p1, p2) {
+                let dx = p2.x - p1.x;
+                let dy = p2.y - p1.y;
+                return Math.sqrt(dx * dx + dy * dy);
+            }
+
+            // Touch support
+            svg.addEventListener("touchstart", (e) => {
+                e.preventDefault();
+                bool = true;
+            });
+
+            svg.addEventListener("touchend", (e) => {
+                e.preventDefault();
+                bool = false;
+                previous = {};
+            });
+
+            svg.addEventListener("touchmove", (e) => {
+                e.preventDefault();
+                if (bool) {
+                    const touch = e.touches[0];
+                    m = oMousePosSVG(touch);
+                    let n = 2 + ~~(Math.random() * 4);
+                    if (previous.x) {
+                        let d = dist(m, previous);
+                        scale = d / 30;
+                    } else {
+                        scale = 1;
+                    }
+                    new Flower(n, { x: m.x, y: m.y }, scale, svg);
+                    previous.x = m.x;
+                    previous.y = m.y;
+                }
+            });
+
+            svg.addEventListener("mousedown", (e) => {
+                // Don't clear on first click - keep flowers
+                bool = true;
+            });
+
+            svg.addEventListener("mouseup", () => {
+                bool = false;
+                previous = {};
+            });
+
+            svg.addEventListener("mousemove", (e) => {
+                if (bool) {
+                    m = oMousePosSVG(e);
+                    let n = 2 + ~~(Math.random() * 4);
+                    if (previous.x) {
+                        let d = dist(m, previous);
+                        scale = d / 30;
+                    } else {
+                        scale = 1;
+                    }
+                    new Flower(n, { x: m.x, y: m.y }, scale, svg);
+                    previous.x = m.x;
+                    previous.y = m.y;
+                }
+            });
+        }
+    </script>
+</body>
+</html>

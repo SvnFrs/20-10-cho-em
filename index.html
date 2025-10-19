@@ -2,27 +2,7 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport        /* Navigation Buttons */
-        .nav-button {
-            position: absolute;
-            bottom: 8%;
-            bottom: max(8%, env(safe-area-inset-bottom, 8%));
-            left: 50%;
-            transform: translateX(-50%);
-            padding: 15px 40px;
-            font-size: 1.3em;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            font-family: 'Noto Serif', serif;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease;
-            z-index: 500;
-            animation: pulseButton 2s ease-in-out infinite;
-            -webkit-tap-highlight-color: transparent;
-        }vice-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Chúc mừng 20-10 💐</title>
@@ -49,6 +29,11 @@
             height: -webkit-fill-available;
         }
 
+        /* Use CSS custom property for viewport height (Safari toolbar fix) */
+        :root {
+            --vh: 1vh;
+        }
+
         /* ===== STEP 0: Welcome Message ===== */
         #welcome-screen {
             position: fixed;
@@ -56,6 +41,7 @@
             left: 0;
             width: 100vw;
             height: 100vh;
+            height: calc(var(--vh, 1vh) * 100);
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             display: flex;
             flex-direction: column;
@@ -150,6 +136,7 @@
             left: 0;
             width: 100vw;
             height: 100vh;
+            height: calc(var(--vh, 1vh) * 100);
             opacity: 0;
             pointer-events: none;
             transition: opacity 1s ease-in-out;
@@ -199,6 +186,7 @@
             left: 0;
             width: 100vw;
             height: 100vh;
+            height: calc(var(--vh, 1vh) * 100);
             opacity: 0;
             pointer-events: none;
             transition: opacity 1s ease-in-out;
@@ -314,6 +302,7 @@
             left: 0;
             width: 100vw;
             height: 100vh;
+            height: calc(var(--vh, 1vh) * 100);
             opacity: 0;
             pointer-events: none;
             transition: opacity 1s ease-in-out;
@@ -373,6 +362,17 @@
             body {
                 -webkit-text-size-adjust: 100%;
                 -webkit-tap-highlight-color: transparent;
+            }
+
+            /* Increase button bottom spacing for Safari toolbar */
+            .nav-button {
+                bottom: 10%;
+                bottom: max(10%, calc(env(safe-area-inset-bottom, 0px) + 8%));
+            }
+
+            #complete-btn {
+                bottom: 20%;
+                bottom: max(20%, calc(env(safe-area-inset-bottom, 0px) + 17%));
             }
 
             /* Welcome screen optimization */
@@ -590,6 +590,45 @@
     </div>
 
     <script>
+        // ===== FIX: Auto-hide Safari iOS toolbar/address bar =====
+        function hideSafariToolbar() {
+            // Force scroll to hide Safari UI bars
+            window.scrollTo(0, 1);
+            setTimeout(() => window.scrollTo(0, 0), 0);
+        }
+
+        // Hide toolbar on page load
+        window.addEventListener('load', hideSafariToolbar);
+        
+        // Re-hide when orientation changes
+        window.addEventListener('orientationchange', () => {
+            setTimeout(hideSafariToolbar, 100);
+        });
+        
+        // Re-hide when window resizes (Safari toolbar show/hide)
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(hideSafariToolbar, 100);
+        });
+
+        // Detect if running on iOS Safari
+        const isIOSSafari = /iP(ad|hone|od).+Version\/[\d\.]+.*Safari/i.test(navigator.userAgent);
+        
+        // Set CSS custom property for viewport height (includes toolbar)
+        function setViewportHeight() {
+            // Use window.innerHeight which excludes Safari UI bars when hidden
+            const vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+        }
+        
+        setViewportHeight();
+        window.addEventListener('resize', setViewportHeight);
+        window.addEventListener('orientationchange', () => {
+            setTimeout(setViewportHeight, 100);
+        });
+
+        // ===== Main App Logic =====
         let currentStep = 0;
         const welcomeScreen = document.getElementById('welcome-screen');
         const step1Container = document.getElementById('step1-container');
@@ -603,16 +642,19 @@
 
         // Welcome screen click
         welcomeScreen.addEventListener('click', function() {
+            hideSafariToolbar(); // Hide toolbar when starting
             welcomeScreen.classList.add('hidden');
             setTimeout(() => {
                 currentStep = 1;
                 step1Container.classList.add('active');
+                hideSafariToolbar(); // Re-hide after transition
             }, 800);
         });
 
         // Step 1 -> Step 2 (button click)
         step1NextBtn.addEventListener('click', function(e) {
             e.stopPropagation();
+            hideSafariToolbar(); // Hide toolbar on button click
             if (currentStep === 1) {
                 currentStep = 2;
                 step1Container.classList.remove('active');
@@ -630,6 +672,7 @@
         // Complete button - show final message and next button
         completeBtn.addEventListener('click', function(e) {
             e.stopPropagation();
+            hideSafariToolbar(); // Hide toolbar on button click
             finalMessage.style.display = 'block';
             completeBtn.classList.add('hidden');
             setTimeout(() => {
@@ -640,6 +683,7 @@
         // Step 2 -> Step 3 (button click)
         step2NextBtn.addEventListener('click', function(e) {
             e.stopPropagation();
+            hideSafariToolbar(); // Hide toolbar on button click
             if (currentStep === 2) {
                 currentStep = 3;
                 step2Container.classList.remove('active');
@@ -652,6 +696,7 @@
         // Step 3 finish button
         step3FinishBtn.addEventListener('click', function(e) {
             e.stopPropagation();
+            hideSafariToolbar(); // Hide toolbar on button click
             alert('Chúc em luôn vui vẻ và hạnh phúc! 💐');
         });
 

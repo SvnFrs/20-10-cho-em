@@ -2,7 +2,29 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport        /* Navigation Buttons */
+        .nav-button {
+            position: absolute;
+            bottom: 8%;
+            bottom: max(8%, env(safe-area-inset-bottom, 8%));
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 15px 40px;
+            font-size: 1.3em;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Noto Serif', serif;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            z-index: 500;
+            animation: pulseButton 2s ease-in-out infinite;
+            -webkit-tap-highlight-color: transparent;
+        }vice-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Chúc mừng 20-10 💐</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Noto+Serif:wght@400;700&display=swap" rel="stylesheet">
     <style>
@@ -16,6 +38,15 @@
             font-family: 'Noto Serif', serif;
             overflow: hidden;
             background: #000;
+            position: fixed;
+            width: 100%;
+            height: 100vh;
+            height: -webkit-fill-available;
+            overscroll-behavior: none;
+        }
+
+        html {
+            height: -webkit-fill-available;
         }
 
         /* ===== STEP 0: Welcome Message ===== */
@@ -133,6 +164,7 @@
         #step1-message {
             position: absolute;
             top: 10%;
+            top: max(10%, calc(env(safe-area-inset-top, 0px) + 5%));
             left: 50%;
             transform: translateX(-50%);
             color: white;
@@ -182,6 +214,7 @@
         #step2-message {
             position: absolute;
             top: 5%;
+            top: max(5%, calc(env(safe-area-inset-top, 0px) + 2%));
             left: 50%;
             transform: translateX(-50%);
             color: #883277;
@@ -208,15 +241,18 @@
         #draw-svg {
             pointer-events: none !important;
             background: transparent;
+            touch-action: none;
         }
 
         #draw-svg.drawing-active {
             pointer-events: all !important;
+            touch-action: none;
         }
 
         #complete-btn {
             position: absolute;
             bottom: 18%;
+            bottom: max(18%, calc(env(safe-area-inset-bottom, 0px) + 15%));
             left: 50%;
             transform: translateX(-50%);
             padding: 15px 40px;
@@ -230,6 +266,7 @@
             font-family: 'Noto Serif', serif;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
             transition: all 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
         }
 
         #complete-btn:hover {
@@ -292,6 +329,7 @@
         #step3-message {
             position: absolute;
             top: 10%;
+            top: max(10%, calc(env(safe-area-inset-top, 0px) + 5%));
             left: 50%;
             transform: translateX(-50%);
             color: #883277;
@@ -306,7 +344,7 @@
             animation: messageFloat 3s ease-in-out infinite;
         }
 
-        /* Responsive adjustments */
+        /* Responsive adjustments for mobile devices */
         @media (max-width: 768px) {
             .welcome-content h1 {
                 font-size: 2.5em;
@@ -327,6 +365,149 @@
             .nav-button {
                 font-size: 1.1em;
                 padding: 12px 30px;
+            }
+        }
+
+        /* Optimized for iPhone 11/12/13 (390px - 428px width) */
+        @media (max-width: 430px) {
+            body {
+                -webkit-text-size-adjust: 100%;
+                -webkit-tap-highlight-color: transparent;
+            }
+
+            /* Welcome screen optimization */
+            .welcome-content {
+                padding: 20px;
+            }
+            
+            .welcome-content h1 {
+                font-size: 2.2em;
+                margin-bottom: 15px;
+            }
+            
+            .welcome-content p {
+                font-size: 1.1em;
+            }
+            
+            .welcome-content .subtitle {
+                font-size: 1em;
+                margin-top: 20px;
+            }
+
+            /* Step messages - compact for small screens */
+            #step1-message {
+                top: 8%;
+                font-size: 1em;
+                padding: 12px 20px;
+                max-width: 85%;
+                line-height: 1.5;
+            }
+
+            #step2-message {
+                top: 3%;
+                font-size: 0.95em;
+                padding: 10px 18px;
+                max-width: 88%;
+                line-height: 1.4;
+            }
+
+            #step2-message small {
+                font-size: 0.85em;
+                display: block;
+                margin-top: 5px;
+            }
+
+            #step3-message {
+                top: 8%;
+                font-size: 1em;
+                padding: 12px 20px;
+                max-width: 85%;
+                line-height: 1.5;
+            }
+
+            /* Final message - readable on small screen */
+            #final-message {
+                font-size: 1.3em;
+                padding: 20px 25px;
+                max-width: 85%;
+                line-height: 1.6;
+            }
+
+            /* Buttons - larger touch target for mobile */
+            .nav-button {
+                font-size: 1em;
+                padding: 14px 35px;
+                bottom: 6%;
+                min-width: 200px;
+                min-height: 50px;
+            }
+
+            #complete-btn {
+                font-size: 1em;
+                padding: 14px 35px;
+                bottom: 15%;
+                min-width: 200px;
+                min-height: 50px;
+            }
+
+            /* Prevent zoom on double-tap */
+            button {
+                touch-action: manipulation;
+            }
+        }
+
+        /* Extra small devices - iPhone SE, iPhone 12 mini (375px) */
+        @media (max-width: 376px) {
+            .welcome-content h1 {
+                font-size: 2em;
+            }
+            
+            .welcome-content p {
+                font-size: 1em;
+            }
+
+            #step1-message,
+            #step2-message,
+            #step3-message {
+                font-size: 0.9em;
+                padding: 10px 15px;
+            }
+
+            #final-message {
+                font-size: 1.2em;
+                padding: 18px 20px;
+            }
+
+            .nav-button,
+            #complete-btn {
+                font-size: 0.95em;
+                padding: 12px 30px;
+                min-width: 180px;
+            }
+        }
+
+        /* Larger iPhones - iPhone 12/13/14 Pro Max (428px) */
+        @media (min-width: 414px) and (max-width: 430px) {
+            .welcome-content h1 {
+                font-size: 2.5em;
+            }
+
+            #step1-message,
+            #step2-message,
+            #step3-message {
+                font-size: 1.1em;
+                padding: 14px 22px;
+            }
+
+            #final-message {
+                font-size: 1.4em;
+            }
+
+            .nav-button,
+            #complete-btn {
+                font-size: 1.05em;
+                padding: 15px 38px;
+                min-width: 220px;
             }
         }
     </style>

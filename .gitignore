@@ -27,7 +27,5 @@ node_modules/
 *.backup
 .github/instructions
 
-DEPLOY.md
-HUONG-DAN.md
-README.md
-deploy.sh
+*.md
+*.sh
